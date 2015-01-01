@@ -15,19 +15,19 @@ if size(dbnames) > 1 & sum(strcmp(dbnames, 'COFW')) > 0
 end
 
 if sum(strcmp(dbnames, 'COFW')) > 0
-    load('..\initial_shape\InitialShape_29.mat');
+    load('../initial_shape/InitialShape_29.mat');
     params.meanshape        = S0;
 else
-    load('..\initial_shape\InitialShape_68.mat');
+    load('../initial_shape/InitialShape_68.mat');
     params.meanshape        = S0(params.ind_usedpts, :);
 end
 
 
 if params.isparallel
-    if isempty(gcp('nocreate')) %判断并行计算环境是否已然启动
-        parpool(4); %若尚未启动，则启动并行环境
+    if matlabpool('size') <= 0
+        matlabpool('open', 'local', 4);
     else
-        disp('Already initialized'); %说明并行环境已经启动。
+        disp('Already initialzed');
     end
 end
 
@@ -37,7 +37,9 @@ Tr_Data    = [];
 % Tr_Bboxes  = [];
 for i = 1:length(dbnames)
     % load training samples (including training images, and groundtruth shapes)
-    imgpathlistfile = strcat('D:\Projects_Face_Detection\Datasets\', dbnames{i}, '\Path_Images.txt');
+    imgpathlistfile = strcat('/ficus179b/zqzhang/data/', dbnames{i}, '/Path_Images.txt');
+    
+    disp(imgpathlistfile);
     tr_data = loadsamples(imgpathlistfile, 2);
     Tr_Data = [Tr_Data; tr_data];
 end
@@ -201,12 +203,12 @@ for s = 1:Param.max_numstage
     % derive binary codes given learned random forest in current stage
     disp('extract local binary features...');
 
-    if exist(strcat('LBFeats\LBFeats', num2str(s), '.mat'))
-        load(strcat('LBFeats\LBFeats', num2str(s), '.mat'));
+    if exist(strcat('LBFeats/LBFeats', num2str(s), '.mat'))
+        load(strcat('LBFeats/LBFeats', num2str(s), '.mat'));
     else
         tic;
         binfeatures = derivebinaryfeat(randf{s}, Data, Param, s);
-        % save(strcat('LBFeats\LBFeats', num2str(s), '.mat'), 'binfeatures', '-v7.3');
+        % save(strcat('LBFeats/LBFeats', num2str(s), '.mat'), 'binfeatures', '-v7.3');
         toc;
     end
     
