@@ -37,7 +37,7 @@ Tr_Data    = [];
 % Tr_Bboxes  = [];
 for i = 1:length(dbnames)
     % load training samples (including training images, and groundtruth shapes)
-    imgpathlistfile = strcat('/ficus179b/zqzhang/data/', dbnames{i}, '/Path_Images.txt');
+    imgpathlistfile = strcat('/ficus179b/zqzhang/data/', dbnames{i}, '/trainset/Path_Images.txt');
     
     disp(imgpathlistfile);
     tr_data = loadsamples(imgpathlistfile, 2);
@@ -220,6 +220,10 @@ for s = 1:Param.max_numstage
     % save(strcat('Ws\W', num2str(s), '.mat'), 'W', '-v7.3');
     toc;      
     
+%     drawshapes(Data{1}.img_gray, [Data{1}.shape_gt Data{1}.intermediate_shapes{1}(:,:, 1) Data{1}.intermediate_shapes{s}(:,:, 1)]);       
+%     hold off;
+%     drawnow;
+%     waitforbuttonpress;
 end
 
 LBFRegModel.ranf = randf;

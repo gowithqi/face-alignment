@@ -1,6 +1,6 @@
 function RF2ArrayModel(LBFRegModel)
 if 0
-    model_path = '..\Models\LBFRegModel_afw_lfpw_helen_5.mat';
+    model_path = '../Models/LBFRegModel_afw_lfpw_helen_5.mat';
     load(model_path)
 end
 
@@ -86,9 +86,9 @@ elseif precision_byte==8
     RF = double(RF);
     W = double(W);
 end
-save('..\Models\Header.mat','Header');
-save('..\Models\RF.mat','RF');
-save('..\Models\W.mat','W');
+save('../Models/Header.mat','Header');
+save('../Models/RF.mat','RF');
+save('../Models/W.mat','W');
 fprintf('write success.\n')
 end
 

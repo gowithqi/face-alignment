@@ -32,6 +32,8 @@ for i = 1:dbsize*(params.augnumber)
 end
 
 % Predict the location of lanmarks using current regression matrix
+disp(size(binaryfeatures));
+disp(size(W));
 deltashapes_bar = binaryfeatures*W;
 
 predshapes = zeros([size(params.meanshape) dbsize*(params.augnumber)]);  % concatenate 2-D coordinates into a vector (N X (2*L))
@@ -65,6 +67,7 @@ for i = 1:dbsize*(params.augnumber)
     
     
     if stage >= params.max_numstage 
+        disp('miao');
         % [Te_Data{k}.shape_gt Te_Data{k}.intermediate_shapes{1}(:,:, s) shape_newstage]
         drawshapes(Te_Data{k}.img_gray, [Te_Data{k}.shape_gt Te_Data{k}.intermediate_shapes{1}(:,:, s) shape_newstage]);       
         hold off;

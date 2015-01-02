@@ -1,9 +1,9 @@
 RF2ArrayModel(LBFRegModel);
 
-load ..\Models\Header.mat
-load '..\Models\InitialShape_68.mat';
-load ..\Models\RF.mat
-load ..\Models\W.mat
+load ../Models/Header.mat
+load '../Models/InitialShape_68.mat';
+load ../Models/RF.mat
+load ../Models/W.mat
     
 H = single(Header);
 RF = single(RF);
@@ -11,9 +11,9 @@ S0 = single(S0);
 W = single(W);
 
 precision = 'float32';
-filename = '..\Models\model.bin';
+filename = '../Models/model.bin';
 fid = fopen(filename,'wb');
-assert(fid>0,['´ò¿ªÎÄ¼þ' filename 'Ê§°Ü!']);
+assert(fid>0,['ï¿½ï¿½ï¿½Ä¼ï¿½' filename 'Ê§ï¿½ï¿½!']);
 
 count_header = fwrite(fid, H, precision);
 count_S0 = fwrite(fid, S0', precision);
