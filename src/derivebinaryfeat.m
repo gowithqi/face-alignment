@@ -283,21 +283,20 @@ pixel_b_y_lmcoord = pixel_b_y_imgcoord;
 [mean_landmark_x, mean_landmark_y] = tformfwd(tf2meanshape, shape(1), shape(2));
 
 % get the sample pixel 
-pixel_a_x = int16(bsxfun(@plus, pixel_a_x_lmcoord, mean_landmark_x));
-pixel_a_y = int16(bsxfun(@plus, pixel_a_y_lmcoord, mean_landmark_y));
-
-pixel_b_x = int16(bsxfun(@plus, pixel_b_x_lmcoord, mean_landmark_x));
-pixel_b_y = int16(bsxfun(@plus, pixel_b_y_lmcoord, mean_landmark_y));
+pixel_a_x = (bsxfun(@plus, pixel_a_x_lmcoord, mean_landmark_x));
+pixel_a_y = (bsxfun(@plus, pixel_a_y_lmcoord, mean_landmark_y));
+pixel_b_x = (bsxfun(@plus, pixel_b_x_lmcoord, mean_landmark_x));
+pixel_b_y = (bsxfun(@plus, pixel_b_y_lmcoord, mean_landmark_y));
 
 % transform the pixels from mean shape to current shape
 [pixel_a_x, pixel_a_y] = tforminv(tf2meanshape, pixel_a_x, pixel_a_y);    
 [pixel_b_x, pixel_b_y] = tforminv(tf2meanshape, pixel_b_x, pixel_b_y);
 
-pixel_a_x = max(1, min(pixel_a_x, width));
-pixel_a_y = max(1, min(pixel_a_y, height));
+pixel_a_x = max(1, min(int16(pixel_a_x), width));
+pixel_a_y = max(1, min(int16(pixel_a_y), height));
 
-pixel_b_x = max(1, min(pixel_b_x, width));
-pixel_b_y = max(1, min(pixel_b_y, height));
+pixel_b_x = max(1, min(int16(pixel_b_x), width));
+pixel_b_y = max(1, min(int16(pixel_b_y), height));
 
 pdfeats = int16(img_gray(pixel_a_y + (pixel_a_x-1)*height)) - int16(img_gray(pixel_b_y + (pixel_b_x-1)*height));
 
