@@ -21,3 +21,6 @@ params.max_numthreshs  = 100;
 
 % initialize parameters for boosting gradient regression
 params.max_numstage    = 7;
+
+% for debug image
+params.show_debug_image = false;

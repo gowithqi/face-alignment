@@ -67,13 +67,14 @@ for i = 1:dbsize*(params.augnumber)
     
     
     if stage >= params.max_numstage 
-        disp('miao');
         % [Te_Data{k}.shape_gt Te_Data{k}.intermediate_shapes{1}(:,:, s) shape_newstage]
-        drawshapes(Te_Data{k}.img_gray, [Te_Data{k}.shape_gt Te_Data{k}.intermediate_shapes{1}(:,:, s) shape_newstage]);       
-        hold off;
-        drawnow;
-        error_per_image = compute_error(gtshapes(:, :, i), predshapes(:, :, i))
-        w = waitforbuttonpress;
+        
+        if params.show_debug_image == 1
+            drawshapes(Te_Data{k}.img_gray, [Te_Data{k}.shape_gt Te_Data{k}.intermediate_shapes{1}(:,:, s) shape_newstage]);       
+            hold off;
+            drawnow;
+            w = waitforbuttonpress;
+        end
     end
     
 end
