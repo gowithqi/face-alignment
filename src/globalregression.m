@@ -69,7 +69,7 @@ end
 
 MRSE = 100*mean(mean(sqrt(Delta_x_imgcoord.^2+Delta_y_imgcoord.^2), 2)./dist_pupils);
 
-MRSE_display = sprintf('Mean Root Square Error for %d Training Samples: %f', (dbsize*(params.augnumber)), MRSE);
+MRSE_display = sprintf('Stage %d: Mean Root Square Error for %d Training Samples: %f', stage, (dbsize*(params.augnumber)), MRSE);
 disp(MRSE_display);
 
 for i = 1:dbsize*(params.augnumber)

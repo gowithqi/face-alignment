@@ -167,11 +167,11 @@ for i = 1:length(ind_samples)
     k = mod(ind_samples(i)-1, (params.augnumber)) + 1;
     
     % calculate the relative location under the coordinate of meanshape
-    pixel_a_x_imgcoord = (angles_cos(:, 1)).*radiuspairs(:, 1)*params.max_raio_radius(stage)*Tr_Data{s}.intermediate_bboxes{stage}(k, 3);
-    pixel_a_y_imgcoord = (angles_sin(:, 1)).*radiuspairs(:, 1)*params.max_raio_radius(stage)*Tr_Data{s}.intermediate_bboxes{stage}(k, 4);
+    pixel_a_x_lmcoord = (angles_cos(:, 1)).*radiuspairs(:, 1)*params.max_raio_radius(stage)*Tr_Data{s}.intermediate_bboxes{stage}(k, 3);
+    pixel_a_y_lmcoord = (angles_sin(:, 1)).*radiuspairs(:, 1)*params.max_raio_radius(stage)*Tr_Data{s}.intermediate_bboxes{stage}(k, 4);
     
-    pixel_b_x_imgcoord = (angles_cos(:, 2)).*radiuspairs(:, 2)*params.max_raio_radius(stage)*Tr_Data{s}.intermediate_bboxes{stage}(k, 3);
-    pixel_b_y_imgcoord = (angles_sin(:, 2)).*radiuspairs(:, 2)*params.max_raio_radius(stage)*Tr_Data{s}.intermediate_bboxes{stage}(k, 4);
+    pixel_b_x_lmcoord = (angles_cos(:, 2)).*radiuspairs(:, 2)*params.max_raio_radius(stage)*Tr_Data{s}.intermediate_bboxes{stage}(k, 3);
+    pixel_b_y_lmcoord = (angles_sin(:, 2)).*radiuspairs(:, 2)*params.max_raio_radius(stage)*Tr_Data{s}.intermediate_bboxes{stage}(k, 4);
     
     % no transformation
     %{
@@ -182,18 +182,19 @@ for i = 1:length(ind_samples)
     pixel_b_y_lmcoord = pixel_b_y_imgcoord;
     %}
     
+    landmark = Tr_Data{s}.intermediate_shapes{stage}(lmarkID, :, k);
+    [mean_landmark_x, mean_landmark_y] = tformfwd(Tr_Data{s}.tf2meanshape{k}, landmark(1), landmark(2));
+        
+    pixel_a_x = int16(bsxfun(@plus, pixel_a_x_lmcoord, mean_landmark_x));
+    pixel_a_y = int16(bsxfun(@plus, pixel_a_y_lmcoord, mean_landmark_y));
+    
+    pixel_b_x = int16(bsxfun(@plus, pixel_b_x_lmcoord, mean_landmark_x));
+    pixel_b_y = int16(bsxfun(@plus, pixel_b_y_lmcoord, mean_landmark_y));
+    
     % transform the pixels from image coordinate (meanshape) to coordinate of current shape
     
-    [pixel_a_x_lmcoord, pixel_a_y_lmcoord] = tformfwd(Tr_Data{s}.meanshape2tf{k}, pixel_a_x_imgcoord, pixel_a_y_imgcoord);    
-    
-    [pixel_b_x_lmcoord, pixel_b_y_lmcoord] = tformfwd(Tr_Data{s}.meanshape2tf{k}, pixel_b_x_imgcoord, pixel_b_y_imgcoord);
-    
-    
-    pixel_a_x = int16(bsxfun(@plus, pixel_a_x_lmcoord, Tr_Data{s}.intermediate_shapes{stage}(lmarkID, 1, k)));
-    pixel_a_y = int16(bsxfun(@plus, pixel_a_y_lmcoord, Tr_Data{s}.intermediate_shapes{stage}(lmarkID, 2, k)));
-    
-    pixel_b_x = int16(bsxfun(@plus, pixel_b_x_lmcoord, Tr_Data{s}.intermediate_shapes{stage}(lmarkID, 1, k)));
-    pixel_b_y = int16(bsxfun(@plus, pixel_b_y_lmcoord, Tr_Data{s}.intermediate_shapes{stage}(lmarkID, 2, k)));
+    [pixel_a_x, pixel_a_y] = tformfwd(Tr_Data{s}.meanshape2tf{k}, pixel_a_x, pixel_a_y);    
+    [pixel_b_x, pixel_b_y] = tformfwd(Tr_Data{s}.meanshape2tf{k}, pixel_b_x, pixel_b_y);
     
     width = (Tr_Data{s}.width);
     height = (Tr_Data{s}.height);

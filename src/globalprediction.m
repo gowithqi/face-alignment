@@ -82,7 +82,7 @@ end
 error_per_image = compute_error(gtshapes, predshapes);
 
 MRSE = 100*mean(error_per_image);
-MRSE_display = sprintf('Mean Root Square Error for %d Test Samples: %f', (dbsize*(params.augnumber)), MRSE);
+MRSE_display = sprintf('Stage %d: Mean Root Square Error for %d Test Samples: %f', stage, (dbsize*(params.augnumber)), MRSE);
 disp(MRSE_display);
 
 end

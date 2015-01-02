@@ -264,11 +264,11 @@ anglepairs = feats(:, 1:2);
 radiuspairs = feats(:, 3:4);
 
 % calculate the relative location under the coordinate of meanshape
-pixel_a_x_imgcoord = cos(anglepairs(:, 1)).*radiuspairs(:, 1)*params.max_raio_radius(stage)*bbox(3);
-pixel_a_y_imgcoord = sin(anglepairs(:, 1)).*radiuspairs(:, 1)*params.max_raio_radius(stage)*bbox(4);
+pixel_a_x_lmcoord = cos(anglepairs(:, 1)).*radiuspairs(:, 1)*params.max_raio_radius(stage)*bbox(3);
+pixel_a_y_lmcoord = sin(anglepairs(:, 1)).*radiuspairs(:, 1)*params.max_raio_radius(stage)*bbox(4);
 
-pixel_b_x_imgcoord = cos(anglepairs(:, 2)).*radiuspairs(:, 2)*params.max_raio_radius(stage)*bbox(3);
-pixel_b_y_imgcoord = sin(anglepairs(:, 2)).*radiuspairs(:, 2)*params.max_raio_radius(stage)*bbox(4);
+pixel_b_x_lmcoord = cos(anglepairs(:, 2)).*radiuspairs(:, 2)*params.max_raio_radius(stage)*bbox(3);
+pixel_b_y_lmcoord = sin(anglepairs(:, 2)).*radiuspairs(:, 2)*params.max_raio_radius(stage)*bbox(4);
 
 % no transformaiton
 %{
@@ -279,17 +279,19 @@ pixel_b_x_lmcoord = pixel_b_x_imgcoord;
 pixel_b_y_lmcoord = pixel_b_y_imgcoord;
 %}
 
-% transform the pixels from image coordinate (meanshape) to coordinate of current shape
+% transform current landmark to meanshape
+[mean_landmark_x, mean_landmark_y] = tformfwd(tf2meanshape, shape(1), shape(2));
 
-[pixel_a_x_lmcoord, pixel_a_y_lmcoord] = tforminv(tf2meanshape, pixel_a_x_imgcoord, pixel_a_y_imgcoord);
-[pixel_b_x_lmcoord, pixel_b_y_lmcoord] = tforminv(tf2meanshape, pixel_b_x_imgcoord, pixel_b_y_imgcoord);
+% get the sample pixel 
+pixel_a_x = int16(bsxfun(@plus, pixel_a_x_lmcoord, mean_landmark_x));
+pixel_a_y = int16(bsxfun(@plus, pixel_a_y_lmcoord, mean_landmark_y));
 
+pixel_b_x = int16(bsxfun(@plus, pixel_b_x_lmcoord, mean_landmark_x));
+pixel_b_y = int16(bsxfun(@plus, pixel_b_y_lmcoord, mean_landmark_y));
 
-pixel_a_x = ceil(pixel_a_x_lmcoord + shape(1));
-pixel_a_y = ceil(pixel_a_y_lmcoord + shape(2));
-
-pixel_b_x = ceil(pixel_b_x_lmcoord + shape(1));
-pixel_b_y = ceil(pixel_b_y_lmcoord + shape(2));
+% transform the pixels from mean shape to current shape
+[pixel_a_x, pixel_a_y] = tforminv(tf2meanshape, pixel_a_x, pixel_a_y);    
+[pixel_b_x, pixel_b_y] = tforminv(tf2meanshape, pixel_b_x, pixel_b_y);
 
 pixel_a_x = max(1, min(pixel_a_x, width));
 pixel_a_y = max(1, min(pixel_a_y, height));
