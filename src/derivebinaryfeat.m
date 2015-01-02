@@ -271,19 +271,19 @@ pixel_b_x_imgcoord = cos(anglepairs(:, 2)).*radiuspairs(:, 2)*params.max_raio_ra
 pixel_b_y_imgcoord = sin(anglepairs(:, 2)).*radiuspairs(:, 2)*params.max_raio_radius(stage)*bbox(4);
 
 % no transformaiton
-
+%{
 pixel_a_x_lmcoord = pixel_a_x_imgcoord;
 pixel_a_y_lmcoord = pixel_a_y_imgcoord;
     
 pixel_b_x_lmcoord = pixel_b_x_imgcoord;
 pixel_b_y_lmcoord = pixel_b_y_imgcoord;
-
+%}
 
 % transform the pixels from image coordinate (meanshape) to coordinate of current shape
-%{
+
 [pixel_a_x_lmcoord, pixel_a_y_lmcoord] = tforminv(tf2meanshape, pixel_a_x_imgcoord, pixel_a_y_imgcoord);
 [pixel_b_x_lmcoord, pixel_b_y_lmcoord] = tforminv(tf2meanshape, pixel_b_x_imgcoord, pixel_b_y_imgcoord);
-%}
+
 
 pixel_a_x = ceil(pixel_a_x_lmcoord + shape(1));
 pixel_a_y = ceil(pixel_a_y_lmcoord + shape(2));

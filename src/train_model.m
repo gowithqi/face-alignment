@@ -25,7 +25,7 @@ end
 
 if params.isparallel
     if matlabpool('size') <= 0
-        matlabpool('open', 'local', 4);
+        matlabpool('open', 'local', 12);
     else
         disp('Already initialzed');
     end
