@@ -147,14 +147,17 @@ for s = 1:params.max_numstage
     % derive binary codes given learned random forest in current stage
     
     disp('extract local binary features...');
-    if ~exist(strcat(dbname_str, '/lbfeatures_', num2str(s), '.mat'))
-        tic;
-        binfeatures = derivebinaryfeat(randf{s}, Data, Param, s);
-        toc;    
-        save(strcat(dbname_str, '/lbfeatures_', num2str(s), '.mat'), 'binfeatures');
-    else
-        load(strcat(dbname_str, '/lbfeatures_', num2str(s), '.mat'));
-    end
+    binfeatures = derivebinaryfeat(randf{s}, Data, Param, s);
+    
+%     if ~exist(strcat(dbname_str, '/lbfeatures_', num2str(s), '.mat'))
+%         tic;
+%         binfeatures = derivebinaryfeat(randf{s}, Data, Param, s);
+%         toc;    
+%         save(strcat(dbname_str, '/lbfeatures_', num2str(s), '.mat'), 'binfeatures');
+%     else
+%         load(strcat(dbname_str, '/lbfeatures_', num2str(s), '.mat'));
+%     end
+
     % predict the locations of landmarks in current stage
     tic;
     disp('predict landmark locations...');
